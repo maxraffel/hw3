@@ -62,11 +62,15 @@ bool Circuit::parse(const char* fname)
     std::string line;
     while( getline(inFile, line))
     {
+        std::cout << line << std::endl;
+        std::cout << "this line " << (line == "WIRES") << " " << line.length() << std::endl;
         if(line == "WIRES")
         {
+            std::cout << "wires found" << std::endl;
             std::string t_line;
             getline(inFile,t_line);
             int n = stoi(t_line);
+            std::cout << n << std::endl;
             for(int i = 0;i<n;i++)
             {
                 getline(inFile,t_line);
@@ -76,6 +80,7 @@ bool Circuit::parse(const char* fname)
                 std::string s_name;
                 getline(ss, s_name, ',');
                 m_wires.push_back(new Wire(stoi(s_id), s_name));
+                std::cout << "wire " << m_wires.size() << std::endl;
             }
         }
         if(line == "GATES")
@@ -110,6 +115,14 @@ bool Circuit::parse(const char* fname)
                     m_gates.push_back(new Or2Gate(m_wires[stoi(s_in1)], m_wires[stoi(s_in2)], m_wires[stoi(s_output)]));
                 }
                 //Add code here to support the NOT gate type
+                if(s_type == "NOT")
+                {
+                    std::string s_in1;
+                    getline(ss, s_in1, ',');
+                    std::string s_output;
+                    getline(ss, s_output, ',');
+                    m_gates.push_back(new NotGate(m_wires[stoi(s_in1)], m_wires[stoi(s_output)]));
+                }
             }
         }
         if(line == "INJECT")
@@ -133,6 +146,7 @@ bool Circuit::parse(const char* fname)
             }
         }
     }
+    std::cout << m_pq.size() << " " << m_gates.size() << " " << m_wires.size() << std::endl;
     return true;
 }
 
