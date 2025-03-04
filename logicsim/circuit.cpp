@@ -62,15 +62,11 @@ bool Circuit::parse(const char* fname)
     std::string line;
     while( getline(inFile, line))
     {
-        std::cout << line << std::endl;
-        std::cout << "this line " << (line == "WIRES") << " " << line.length() << std::endl;
         if(line == "WIRES")
         {
-            std::cout << "wires found" << std::endl;
             std::string t_line;
             getline(inFile,t_line);
             int n = stoi(t_line);
-            std::cout << n << std::endl;
             for(int i = 0;i<n;i++)
             {
                 getline(inFile,t_line);
@@ -80,7 +76,6 @@ bool Circuit::parse(const char* fname)
                 std::string s_name;
                 getline(ss, s_name, ',');
                 m_wires.push_back(new Wire(stoi(s_id), s_name));
-                std::cout << "wire " << m_wires.size() << std::endl;
             }
         }
         if(line == "GATES")
@@ -146,7 +141,6 @@ bool Circuit::parse(const char* fname)
             }
         }
     }
-    std::cout << m_pq.size() << " " << m_gates.size() << " " << m_wires.size() << std::endl;
     return true;
 }
 
